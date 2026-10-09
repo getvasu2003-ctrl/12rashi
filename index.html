@@ -30,15 +30,32 @@
     <script type="module" src="/src/main.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js', { scope: '/' })
-            .then(function (reg) {
-              console.log('12Rashi PWA ServiceWorker active, scope:', reg.scope);
-            })
-            .catch(function (err) {
-              console.warn('12Rashi PWA ServiceWorker notice:', err);
+        var isProduction = window.location.hostname === '12rashi.com' || window.location.hostname === 'www.12rashi.com';
+        if (isProduction) {
+          window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+              .then(function (reg) {
+                console.log('12Rashi PWA ServiceWorker active, scope:', reg.scope);
+              })
+              .catch(function (err) {
+                console.warn('12Rashi PWA ServiceWorker notice:', err);
+              });
+          });
+        } else {
+          // In development or preview environments, clear any stale service workers and caches
+          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            for (var i = 0; i < registrations.length; i++) {
+              registrations[i].unregister();
+            }
+          });
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              for (var i = 0; i < names.length; i++) {
+                caches.delete(names[i]);
+              }
             });
-        });
+          }
+        }
       }
     </script>
   </body>

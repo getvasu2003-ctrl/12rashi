@@ -36,6 +36,9 @@ export default defineConfig(() => {
       port: 3000,
       host: '0.0.0.0',
       strictPort: true,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+      },
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       hmr: process.env.DISABLE_HMR !== 'true',
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
@@ -44,6 +47,9 @@ export default defineConfig(() => {
       port: 3000,
       host: '0.0.0.0',
       strictPort: true,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+      },
     },
   };
 });
