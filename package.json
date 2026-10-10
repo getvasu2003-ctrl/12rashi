@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "deploy:hosting": "firebase deploy --only hosting:rashi12",
+    "deploy:hosting": "firebase deploy --only hosting --project light-diorama-nmn89",
+    "deploy:fresh": "bash scripts/deploy-fresh.sh",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
