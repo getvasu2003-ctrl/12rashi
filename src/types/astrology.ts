@@ -31,6 +31,10 @@ export interface Astrologer {
   about: string;
   verified: boolean;
   isCelebrity?: boolean;
+  isAi?: boolean;
+  aiPersona?: string;
+  badgeLabel?: string;
+  freeTrialAvailable?: boolean;
   education: string;
   ordersCount: number;
   videoIntroUrl?: string;

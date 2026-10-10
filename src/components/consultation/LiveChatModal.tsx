@@ -11,6 +11,9 @@ import {
   CheckCheck,
   Radio,
   UserCheck,
+  Volume2,
+  VolumeX,
+  ShoppingBag,
 } from 'lucide-react';
 import { ChatMessage } from '../../types/astrology.ts';
 import { liveChatSyncService } from '../../services/liveChatSyncService.ts';
@@ -28,10 +31,38 @@ export const LiveChatModal: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isAstrologerConnected, setIsAstrologerConnected] = useState(false);
+  const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const channelId = activeConsultation
     ? `chat_${activeConsultation.astrologer.id}`
     : 'chat_default';
+
+  // Cleanup speech synthesis on unmount
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const toggleSpeech = (msgId: string, text: string) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (speakingMessageId === msgId) {
+      window.speechSynthesis.cancel();
+      setSpeakingMessageId(null);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const cleanText = text.replace(/[*_#`]/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.95;
+    utterance.pitch = 1.0;
+    utterance.onend = () => setSpeakingMessageId(null);
+    utterance.onerror = () => setSpeakingMessageId(null);
+    setSpeakingMessageId(msgId);
+    window.speechSynthesis.speak(utterance);
+  };
 
   // 1. Initialize and subscribe to live two-way consultation channel
   useEffect(() => {
@@ -200,9 +231,16 @@ export const LiveChatModal: React.FC = () => {
             <div>
               <div className="flex items-center gap-1.5">
                 <h3 className="font-bold text-sm sm:text-base leading-tight">{astrologer.name}</h3>
-                <span className="text-[10px] bg-amber-400 text-stone-950 font-bold px-1.5 py-0.2 rounded-full">
-                  Verified
-                </span>
+                {astrologer.isAi ? (
+                  <span className="text-[10px] bg-purple-700 text-white font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-purple-300/40 animate-pulse">
+                    <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                    24/7 AI Human
+                  </span>
+                ) : (
+                  <span className="text-[10px] bg-amber-400 text-stone-950 font-bold px-1.5 py-0.2 rounded-full">
+                    Verified
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2 mt-0.5">
                 <p className="text-[11px] text-amber-200/90 leading-tight">
@@ -307,6 +345,29 @@ export const LiveChatModal: React.FC = () => {
                 >
                   <p className="whitespace-pre-line">{m.text}</p>
 
+                  {/* Audio Listen Button for Astrologer replies */}
+                  {!isUser && (
+                    <div className="mt-2 pt-1 border-t border-stone-100 dark:border-stone-700/60 flex items-center justify-between">
+                      <button
+                        onClick={() => toggleSpeech(m.id, m.text)}
+                        className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:text-orange-600 cursor-pointer transition py-0.5"
+                        title={speakingMessageId === m.id ? "Stop voice" : "Listen to Astrologer's voice"}
+                      >
+                        {speakingMessageId === m.id ? (
+                          <>
+                            <VolumeX className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+                            <span className="text-red-500">Stop Voice</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="w-3.5 h-3.5" />
+                            <span>Listen to Astrologer</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
+
                   {/* Prescribed Remedy Card */}
                   {m.isRemedy && m.remedyDetails && (
                     <div className="mt-2.5 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-stone-900 dark:text-stone-100">
@@ -315,15 +376,35 @@ export const LiveChatModal: React.FC = () => {
                         <span>{m.remedyDetails.title}</span>
                       </div>
 
+                      {m.remedyDetails.productName && (
+                        <p className="text-xs font-bold text-stone-800 dark:text-stone-200 mt-1">
+                          Recommended Item: <span className="text-orange-600 dark:text-orange-400">{m.remedyDetails.productName}</span>
+                        </p>
+                      )}
+
+                      {m.remedyDetails.suggestedGemstone && (
+                        <p className="text-[11px] text-stone-600 dark:text-stone-300 mt-0.5">
+                          {m.remedyDetails.suggestedGemstone}
+                        </p>
+                      )}
+
                       {m.remedyDetails.mantra && (
-                        <p className="text-xs font-mono font-medium text-orange-700 dark:text-orange-400 my-1">
+                        <p className="text-xs font-mono font-medium text-orange-700 dark:text-orange-400 my-1 bg-amber-50 dark:bg-stone-900 p-1.5 rounded-lg border border-amber-200 dark:border-stone-800">
                           {m.remedyDetails.mantra}
                         </p>
                       )}
 
-                      <div className="mt-2 text-[11px] text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        <span>Prescribed by {m.senderName} • Practice in Vedic Remedies</span>
+                      <div className="mt-2 pt-1 border-t border-amber-200/50 dark:border-stone-800 flex items-center justify-between gap-2">
+                        <span className="text-[10px] text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
+                          <Sparkles className="w-3 h-3" />
+                          <span>Prescribed by {m.senderName}</span>
+                        </span>
+                        {m.remedyDetails.actionType === 'add_to_cart' && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-orange-600 text-white flex items-center gap-1 shadow-2xs">
+                            <ShoppingBag className="w-2.5 h-2.5" />
+                            <span>Available in Astro Store</span>
+                          </span>
+                        )}
                       </div>
                     </div>
                   )}

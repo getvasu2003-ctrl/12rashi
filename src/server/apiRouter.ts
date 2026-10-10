@@ -968,16 +968,40 @@ Rashi AI:`;
               createdTime: Date.now(),
             },
           ],
-          isAstrologerConnected: role === 'astrologer',
+          isAstrologerConnected: role === 'astrologer' || String(astrologerId || '').startsWith('astro-ai-'),
           isUserConnected: role === 'user',
           typingState: null,
           createdAt: Date.now(),
           lastActive: Date.now(),
         };
+
+        // If consulting with an AI Astrologer, add their personalized welcome greeting immediately
+        const astroIdStr = String(astrologerId || '');
+        if (astroIdStr.startsWith('astro-ai-')) {
+          let welcomeMsg = `Pranam ${session.clientName} ji! I am ${session.astrologerName}. I am ready to analyze your planetary positions for ${session.clientRashi}. Please share what is on your mind today.`;
+          if (astroIdStr === 'astro-ai-1') {
+            welcomeMsg = `Pranam ${session.clientName} ji! I am Acharya Brihaspati. I am tuned into your Kundli and current Mahadasha cycles. Ask me about your career growth, business promotions, or financial prospects.`;
+          } else if (astroIdStr === 'astro-ai-2') {
+            welcomeMsg = `Pranam ${session.clientName} ji! I am Vidushi Maitreyi. I am here to guide your heart, love life, Kundli Milan, and marriage compatibility. What relationship questions can I help you resolve?`;
+          } else if (astroIdStr === 'astro-ai-3') {
+            welcomeMsg = `Hari Om ${session.clientName} ji! I am Pandit Parashar. Welcome to our sacred session. Please share your birth details or concerns regarding Manglik, Sade Sati, or planetary doshas so I can prescribe authentic Upayas.`;
+          }
+
+          session.messages.push({
+            id: 'msg-ai-welcome-' + Date.now(),
+            sender: 'astrologer',
+            senderName: session.astrologerName,
+            text: welcomeMsg,
+            timestamp: 'Just now',
+            createdTime: Date.now(),
+          });
+        }
+
         liveChatSessions.set(targetChannel, session);
       } else {
         if (role === 'astrologer') session.isAstrologerConnected = true;
         if (role === 'user') session.isUserConnected = true;
+        if (session.astrologerId.startsWith('astro-ai-')) session.isAstrologerConnected = true;
         session.lastActive = Date.now();
       }
 
@@ -1036,6 +1060,114 @@ Rashi AI:`;
       if (sender === 'user') session.isUserConnected = true;
       if (session.typingState && session.typingState.sender === sender) {
         session.typingState = null;
+      }
+
+      // If user sent a message to an AI Astrologer, generate AI Vedic response
+      if (sender === 'user' && session.astrologerId.startsWith('astro-ai-')) {
+        session.isAstrologerConnected = true;
+        session.typingState = { sender: 'astrologer', timestamp: Date.now() };
+
+        // Background generation so UI gets instant ACK then sees typing indicator
+        (async () => {
+          try {
+            const astroId = session.astrologerId;
+            let astroRolePrompt = 'You are a revered Vedic Acharya on 12Rashi.';
+            let remedyCategory = 'career';
+
+            if (astroId === 'astro-ai-1') {
+              astroRolePrompt = 'You are Acharya Brihaspati (AI), a revered master of Brihat Parashara Hora Shastra, planetary Dashas, career breakthroughs, wealth, and corporate promotions.';
+              remedyCategory = 'career';
+            } else if (astroId === 'astro-ai-2') {
+              astroRolePrompt = 'You are Vidushi Maitreyi (AI), a compassionate Vedic relationship counselor, master of 36-Guna Kundli Milan, soulmate synastry, and Shukra (Venus) harmonizing.';
+              remedyCategory = 'marriage';
+            } else if (astroId === 'astro-ai-3') {
+              astroRolePrompt = 'You are Pandit Parashar (AI), a foremost authority on planetary doshas: Shani Sade Sati, Manglik Dosha, Rahu-Ketu Kaal Sarp Yog, and ancestral Pitra Dosha remedies.';
+              remedyCategory = 'dosha';
+            }
+
+            const recentHistory = session.messages
+              .slice(-6)
+              .map((m) => `${m.sender === 'user' ? 'Seeker (' + session.clientName + ', Rashi: ' + session.clientRashi + ')' : session.astrologerName}: ${m.text}`)
+              .join('\n');
+
+            let replyText = '';
+            let remedyData: any = null;
+
+            if (ai) {
+              const prompt = `${astroRolePrompt}
+You are consulting live with Seeker "${session.clientName}" (Moon Sign / Rashi: "${session.clientRashi || 'Mesh'}").
+Consultation Guidelines:
+1. Speak in a warm, respectful, dignified, spiritual yet practical Vedic tone (use sacred terms like Pranam, Graha Gochar, Bhava, Mahadasha, Upaya naturally).
+2. Answer the seeker's query directly and give authentic Vedic timeline guidance.
+3. Suggest 1 authentic Vedic remedy (Mantra with japa count, or Gemstone, or Daan/Charity).
+4. Keep response under 3-4 concise paragraphs so it reads naturally like a live consultation message.
+
+Recent Conversation:
+${recentHistory}
+Seeker: ${text}
+${session.astrologerName}:`;
+
+              const aiResponse = await ai.models.generateContent({
+                model: 'gemini-3.8-flash',
+                contents: prompt,
+              });
+
+              replyText = aiResponse.text || '';
+            }
+
+            if (!replyText) {
+              if (remedyCategory === 'marriage') {
+                replyText = `Pranam ${session.clientName} ji. Looking at your ${session.clientRashi} Rashi and 7th house planetary transits, relationship harmony is strengthening. For auspicious marriage timing and removing misunderstandings, recite the Shukra Gayatri Mantra daily and offer white flowers on Fridays.`;
+              } else if (remedyCategory === 'dosha') {
+                replyText = `Pranam ${session.clientName} ji. Planetary inspection indicates your current phase is influenced by strong Saturn (Shani) and Rahu transits. To neutralize negative dosha vibrations, chant the Maha Mrityunjaya Mantra 108 times at dusk and light a mustard oil diya under a Peepal tree on Saturdays.`;
+              } else {
+                replyText = `Pranam ${session.clientName} ji. Your 10th house of Karma and career shows dynamic planetary momentum. In the upcoming transit, Jupiter aspects your house of finances. A favorable turning point in career or business expansion is indicated within the next 21 to 45 days. Worship Lord Surya with copper Arghya every morning.`;
+              }
+            }
+
+            // Create contextual remedy recommendation card
+            const combinedLower = (replyText + ' ' + text).toLowerCase();
+            if (combinedLower.includes('gemstone') || combinedLower.includes('ruby') || combinedLower.includes('sapphire') || combinedLower.includes('emerald') || combinedLower.includes('pearl') || combinedLower.includes('panna') || combinedLower.includes('pukhraj')) {
+              remedyData = {
+                title: 'Prescribed Astrological Gemstone Upaya',
+                productName: combinedLower.includes('emerald') || combinedLower.includes('panna') ? 'Natural Zambian Emerald (Panna)' : combinedLower.includes('sapphire') || combinedLower.includes('pukhraj') ? 'Certified Yellow Sapphire (Pukhraj)' : 'Certified Panchdhatu Jyotish Gemstone',
+                suggestedGemstone: 'Energized Vedic Gemstone with Pran Pratishtha Certificate',
+                actionType: 'add_to_cart',
+              };
+            } else if (combinedLower.includes('puja') || combinedLower.includes('anushthan') || combinedLower.includes('sade sati') || combinedLower.includes('rahu') || combinedLower.includes('manglik')) {
+              remedyData = {
+                title: 'Prescribed Vedic Temple Anushthan',
+                productName: 'Shani Shanti & Navgraha Maha Puja at Trimbakeshwar',
+                mantra: 'Om Sham Shanaishcharaya Namah (108 Japa Daily)',
+                actionType: 'spiritual_sadhana',
+              };
+            } else {
+              remedyData = {
+                title: 'Sacred Daily Vedic Upaya',
+                mantra: 'Om Namo Bhagavate Vasudevaya (108 Japa in Brahma Muhurat)',
+                actionType: 'spiritual_sadhana',
+              };
+            }
+
+            const aiMsg: LiveChatMessage = {
+              id: 'msg-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+              sender: 'astrologer',
+              senderName: session.astrologerName,
+              text: replyText.trim(),
+              timestamp: 'Just now',
+              isRemedy: Boolean(remedyData),
+              remedyDetails: remedyData,
+              createdTime: Date.now(),
+            };
+
+            session.messages.push(aiMsg);
+            session.lastActive = Date.now();
+            session.typingState = null;
+          } catch (err) {
+            console.error('Error generating AI astrologer response:', err);
+            session.typingState = null;
+          }
+        })();
       }
 
       return sendJson(res, 200, {

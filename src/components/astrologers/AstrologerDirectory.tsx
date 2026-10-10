@@ -71,6 +71,7 @@ export const AstrologerDirectory: React.FC<AstrologerDirectoryProps> = ({
 
   const specialties = [
     'All',
+    'AI Astrologers (24/7)',
     'Vedic Astrology',
     'Kundli & Horoscope',
     'Tarot Reading',
@@ -85,7 +86,9 @@ export const AstrologerDirectory: React.FC<AstrologerDirectoryProps> = ({
   // Filtering & Sorting
   const filteredAstrologers = astrologers
     .filter((a) => {
-      if (selectedSpecialty !== 'All' && !a.specialties.includes(selectedSpecialty as any)) {
+      if (selectedSpecialty === 'AI Astrologers (24/7)') {
+        if (!a.isAi) return false;
+      } else if (selectedSpecialty !== 'All' && !a.specialties.includes(selectedSpecialty as any)) {
         return false;
       }
       if (availabilityFilter === 'online' && a.status !== 'online') {
@@ -525,13 +528,18 @@ export const AstrologerDirectory: React.FC<AstrologerDirectoryProps> = ({
               key={astro.id}
               className="bg-white dark:bg-stone-900 rounded-3xl p-5 border border-stone-200 dark:border-stone-800 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between relative group"
             >
-              {/* Celebrity or Trending Ribbon */}
-              {astro.isCelebrity && (
+              {/* AI Astrologer or Celebrity Ribbon */}
+              {astro.isAi ? (
+                <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm animate-pulse border border-amber-300/40">
+                  <Sparkles className="w-3 h-3 text-amber-200 fill-amber-200" />
+                  <span>24/7 AI Human</span>
+                </div>
+              ) : astro.isCelebrity ? (
                 <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 text-[10px] font-black uppercase tracking-wider shadow-xs">
                   <Crown className="w-3 h-3 fill-stone-950" />
                   <span>Celebrity Astro</span>
                 </div>
-              )}
+              ) : null}
 
               <div>
                 {/* Astrologer Header: Avatar & Info */}
