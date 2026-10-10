@@ -39,7 +39,11 @@ fi
 
 # 5. Deploy directly to Firebase Hosting
 echo "🌐 [4/5] Uploading to Firebase Hosting ($PROJECT_ID)..."
-npx firebase deploy --only hosting --project "$PROJECT_ID"
+if command -v firebase >/dev/null 2>&1; then
+  firebase deploy --only hosting --project "$PROJECT_ID"
+else
+  npx -y firebase-tools deploy --only hosting --project "$PROJECT_ID"
+fi
 
 echo ""
 echo "=========================================================="
