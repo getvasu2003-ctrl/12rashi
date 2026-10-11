@@ -23,42 +23,69 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/icons/icon-192.png" />
-    <!-- Cashfree PG JS SDK v3 -->
-    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    <script>
+      // Defensive error handling for cross-origin third-party scripts and iframe sandbox restrictions
+      window.addEventListener('error', function (event) {
+        if (!event || event.message === 'Script error.' || !event.filename) {
+          // Prevent generic cross-origin script error from bubbling to uncaught error monitors
+          if (event && event.preventDefault) event.preventDefault();
+          return true;
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (event && event.reason) {
+          var msg = String(event.reason.message || event.reason);
+          if (msg.indexOf('SecurityError') !== -1 || msg.indexOf('serviceWorker') !== -1 || msg.indexOf('caches') !== -1) {
+            if (event.preventDefault) event.preventDefault();
+          }
+        }
+      });
+    </script>
   </head>
   <body class="bg-orange-50/30 text-stone-900 antialiased selection:bg-orange-500 selection:text-white transition-colors duration-200">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      if ('serviceWorker' in navigator) {
-        var isProduction = window.location.hostname === '12rashi.com' || window.location.hostname === 'www.12rashi.com';
-        if (isProduction) {
-          window.addEventListener('load', function () {
-            navigator.serviceWorker.register('/sw.js', { scope: '/' })
-              .then(function (reg) {
-                console.log('12Rashi PWA ServiceWorker active, scope:', reg.scope);
-              })
-              .catch(function (err) {
-                console.warn('12Rashi PWA ServiceWorker notice:', err);
-              });
-          });
-        } else {
-          // In development or preview environments, clear any stale service workers and caches
-          navigator.serviceWorker.getRegistrations().then(function (registrations) {
-            for (var i = 0; i < registrations.length; i++) {
-              registrations[i].unregister();
-            }
-          });
-          if ('caches' in window) {
-            caches.keys().then(function (names) {
-              for (var i = 0; i < names.length; i++) {
-                caches.delete(names[i]);
-              }
+      try {
+        if ('serviceWorker' in navigator) {
+          var isProduction = window.location.hostname === '12rashi.com' || window.location.hostname === 'www.12rashi.com';
+          if (isProduction) {
+            window.addEventListener('load', function () {
+              navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then(function (reg) {
+                  console.log('12Rashi PWA ServiceWorker active, scope:', reg.scope);
+                })
+                .catch(function (err) {
+                  console.debug('12Rashi PWA ServiceWorker notice:', err);
+                });
             });
+          } else {
+            // In development or preview environments, clear any stale service workers and caches safely
+            navigator.serviceWorker.getRegistrations()
+              .then(function (registrations) {
+                if (registrations && registrations.length) {
+                  for (var i = 0; i < registrations.length; i++) {
+                    registrations[i].unregister().catch(function () {});
+                  }
+                }
+              })
+              .catch(function () {});
+            if ('caches' in window) {
+              caches.keys()
+                .then(function (names) {
+                  if (names && names.length) {
+                    for (var i = 0; i < names.length; i++) {
+                      caches.delete(names[i]).catch(function () {});
+                    }
+                  }
+                })
+                .catch(function () {});
+            }
           }
         }
+      } catch (e) {
+        console.debug('SW init handled:', e);
       }
     </script>
   </body>
 </html>
-

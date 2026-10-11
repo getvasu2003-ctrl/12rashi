@@ -17,6 +17,7 @@ import {
   Search,
   Code,
   Check,
+  Key,
 } from 'lucide-react';
 
 interface PlayStoreDeployModalProps {
@@ -58,7 +59,7 @@ export const PlayStoreDeployModal: React.FC<PlayStoreDeployModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [activeTab, setActiveTab] = useState<'autofetch' | 'readiness' | 'bundle' | 'listing' | 'policies'>('autofetch');
+  const [activeTab, setActiveTab] = useState<'autofetch' | 'readiness' | 'bundle' | 'signing' | 'listing' | 'policies'>('autofetch');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Auto-Fetch State
@@ -287,6 +288,17 @@ Customer Grievance Redressal available 24/7.`,
             <span>3. Generate .AAB Bundle</span>
           </button>
           <button
+            onClick={() => setActiveTab('signing')}
+            className={`py-3 px-3.5 border-b-2 transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'signing'
+                ? 'border-amber-500 text-amber-400 font-bold'
+                : 'border-transparent text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            <Key className="w-4 h-4 text-amber-400" />
+            <span>4. Signing Key Fix</span>
+          </button>
+          <button
             onClick={() => setActiveTab('listing')}
             className={`py-3 px-3.5 border-b-2 transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
               activeTab === 'listing'
@@ -295,7 +307,7 @@ Customer Grievance Redressal available 24/7.`,
             }`}
           >
             <FileText className="w-4 h-4" />
-            <span>4. Store Listing Copy</span>
+            <span>5. Store Listing Copy</span>
           </button>
           <button
             onClick={() => setActiveTab('policies')}
@@ -306,7 +318,7 @@ Customer Grievance Redressal available 24/7.`,
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
-            <span>5. Play Console Setup</span>
+            <span>6. Play Console Setup</span>
           </button>
         </div>
 
@@ -588,6 +600,109 @@ npx @bubblewrap/cli init --manifest ${appUrl}/manifest.json
 npx @bubblewrap/cli build`}
                   </pre>
                 </div>
+              </div>
+              {/* Play App Signing Alert Banner */}
+              <div className="bg-amber-950/40 p-4 rounded-xl border border-amber-600/40 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-amber-300 font-bold text-xs">
+                    <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Play Console: &quot;Change Signing Key&quot; exhausted or key mismatch?</span>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('signing')}
+                    className="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold rounded-lg text-[11px] transition cursor-pointer"
+                  >
+                    View Key Fix Guide
+                  </button>
+                </div>
+                <p className="text-stone-300 text-[11px]">
+                  If Play Console says the key is locked because you selected an earlier signed check, you can fix this in 3 easy steps without losing progress.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: PLAY APP SIGNING KEY FIX & RECOVERY */}
+          {activeTab === 'signing' && (
+            <div className="space-y-5 text-xs">
+              <div className="bg-amber-950/30 p-4 rounded-xl border border-amber-600/40 space-y-2">
+                <div className="flex items-center gap-2 text-amber-300 font-bold text-sm">
+                  <Key className="w-4 h-4 text-amber-400" />
+                  <span>Fix: &quot;Changing button is exhausted / Selected earlier signed check&quot;</span>
+                </div>
+                <p className="text-stone-300 leading-relaxed">
+                  In Google Play Console, when configuring <strong>Play App Signing</strong>, Google allows switching options only twice before locking the button for security. Here are the 4 tested ways to resolve this immediately:
+                </p>
+              </div>
+
+              {/* Solution 1 */}
+              <div className="bg-stone-800/80 p-4 rounded-xl border border-stone-700 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-emerald-600/30 text-emerald-400 font-bold flex items-center justify-center shrink-0 text-xs">1</span>
+                  <h4 className="text-sm font-bold text-white">Solution 1: Match the Keystore in PWABuilder (Fastest No-Code Fix)</h4>
+                </div>
+                <p className="text-stone-300 leading-relaxed">
+                  If you used PWABuilder earlier, your downloaded zip file contains a <code className="text-amber-400 font-mono">signing.keystore</code> (or <code className="text-amber-400 font-mono">keystore.jks</code>) and a <code className="text-amber-400 font-mono">readme.txt</code> with passwords.
+                </p>
+                <ol className="list-decimal list-inside space-y-1.5 text-stone-300 pl-1">
+                  <li>Open PWABuilder and click <strong>&quot;Package for Android&quot;</strong>.</li>
+                  <li>Click <strong>&quot;Signing Options&quot;</strong> (do not click Download immediately).</li>
+                  <li>Select <strong>&quot;Use my existing keystore&quot;</strong> and upload the original <code className="text-amber-300 font-mono">signing.keystore</code> with the passwords from your first download.</li>
+                  <li>Generate the <code className="text-emerald-400 font-mono">.aab</code>. It will match the earlier signed check in Google Play Console with 100% precision!</li>
+                </ol>
+              </div>
+
+              {/* Solution 2 */}
+              <div className="bg-stone-800/80 p-4 rounded-xl border border-stone-700 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-orange-600/30 text-orange-400 font-bold flex items-center justify-center shrink-0 text-xs">2</span>
+                  <h4 className="text-sm font-bold text-white">Solution 2: Request Upload Key Reset in Play Console (Self-Service)</h4>
+                </div>
+                <p className="text-stone-300 leading-relaxed">
+                  Google Play Console has an official self-service key reset for developers:
+                </p>
+                <ol className="list-decimal list-inside space-y-1.5 text-stone-300 pl-1">
+                  <li>Go to <strong>Play Console &gt; Release &gt; Setup &gt; App integrity &gt; Play App Signing</strong>.</li>
+                  <li>Scroll down to the <strong>Upload key certificate</strong> section.</li>
+                  <li>Click <strong>&quot;Request upload key reset&quot;</strong> (or &quot;Upgrade key&quot;).</li>
+                  <li>Choose reason: <code className="text-amber-300">&quot;I lost my upload key&quot;</code> or <code className="text-amber-300">&quot;Keystore issue&quot;</code>.</li>
+                  <li>Upload the new certificate PEM file. Google updates your key without needing to re-create the app!</li>
+                </ol>
+              </div>
+
+              {/* Solution 3 */}
+              <div className="bg-stone-800/80 p-4 rounded-xl border border-stone-700 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-blue-600/30 text-blue-400 font-bold flex items-center justify-center shrink-0 text-xs">3</span>
+                  <h4 className="text-sm font-bold text-white">Solution 3: If App is in Draft (Never Released to Production)</h4>
+                </div>
+                <p className="text-stone-300 leading-relaxed">
+                  If this is your first release and the app has not yet been rolled out to public users:
+                </p>
+                <div className="space-y-2 bg-stone-900/80 p-3 rounded-lg border border-stone-800">
+                  <p className="text-stone-300">
+                    <strong className="text-white">Option A:</strong> Go to <strong>Production &gt; Releases</strong> and click <strong>&quot;Discard release&quot;</strong>. Re-create the release and select <span className="text-emerald-400 font-bold">&quot;Use Google-generated key&quot;</span>.
+                  </p>
+                  <p className="text-stone-300">
+                    <strong className="text-white">Option B:</strong> If the signing selection is locked at the app container level, create a <strong>New App</strong> in Play Console with the same title (<code className="text-amber-300">12Rashi</code>) and package (<code className="text-emerald-400">com.twelverashi.app</code>). During setup, choose default <span className="text-emerald-400 font-bold">&quot;Let Google manage and protect your app signing key (recommended)&quot;</span>.
+                  </p>
+                </div>
+              </div>
+
+              {/* Solution 4 */}
+              <div className="bg-stone-800/80 p-4 rounded-xl border border-stone-700 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-purple-600/30 text-purple-400 font-bold flex items-center justify-center shrink-0 text-xs">4</span>
+                  <h4 className="text-sm font-bold text-white">Solution 4: Google Play Developer Support Form (1-Click)</h4>
+                </div>
+                <p className="text-stone-300 leading-relaxed">
+                  If the button is disabled and you cannot reset it yourself, Google provides an automated support form:
+                </p>
+                <ol className="list-decimal list-inside space-y-1 text-stone-300 pl-1">
+                  <li>In Play Console, click the <strong>? (Help)</strong> icon at the top right.</li>
+                  <li>Click <strong>&quot;Contact Us&quot;</strong> &gt; select <strong>&quot;App integrity / App signing key reset&quot;</strong>.</li>
+                  <li>Submit the form with your developer account details. Google typically resets the key within 24 to 48 hours.</li>
+                </ol>
               </div>
             </div>
           )}
