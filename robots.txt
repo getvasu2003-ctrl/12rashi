@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap Index
+Sitemap: https://www.12rashi.com/sitemap.xml

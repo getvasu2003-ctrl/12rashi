@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>12Rashi - Live Astrology, Kundli & Consultations</title>
+    <meta name="description" content="India's premier astrology platform featuring live consultations, Kundli analytics, daily horoscopes, AI predictions, Vedic sacred mantras & remedies, and partner astrologer portal." />
+    <meta property="og:title" content="12Rashi - Live Astrology, Kundli & Consultations" />
+    <meta property="og:description" content="Connect with top verified astrologers, get instant Kundli predictions, sacred Vedic mantras, remedies, and daily planetary transits." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#ea580c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="12Rashi" />
+    <link rel="canonical" href="https://12rashi.com/" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="alternate" type="application/manifest+json" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <!-- Cashfree PG JS SDK v3 -->
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    <script type="module" crossorigin src="/assets/index-DFCWw6wz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-mchlh8t_.css">
+  </head>
+  <body class="bg-orange-50/30 text-stone-900 antialiased selection:bg-orange-500 selection:text-white transition-colors duration-200">
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        var isProduction = window.location.hostname === '12rashi.com' || window.location.hostname === 'www.12rashi.com';
+        if (isProduction) {
+          window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+              .then(function (reg) {
+                console.log('12Rashi PWA ServiceWorker active, scope:', reg.scope);
+              })
+              .catch(function (err) {
+                console.warn('12Rashi PWA ServiceWorker notice:', err);
+              });
+          });
+        } else {
+          // In development or preview environments, clear any stale service workers and caches
+          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            for (var i = 0; i < registrations.length; i++) {
+              registrations[i].unregister();
+            }
+          });
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              for (var i = 0; i < names.length; i++) {
+                caches.delete(names[i]);
+              }
+            });
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
+
