@@ -505,6 +505,179 @@ const svgMobile3 = `
 </svg>
 `;
 
+// 5. Mobile Screenshot 4: Daily Rashi Bhavishya & Audio Horoscopes (1080 x 1920)
+const svgMobile4 = `
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="m4Bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="50%" stop-color="#fef3c7" />
+      <stop offset="100%" stop-color="#fed7aa" />
+    </linearGradient>
+    <linearGradient id="m4Header" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="50%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <filter id="m4Shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#78350f" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1920" fill="url(#m4Bg)" />
+
+  <!-- App Header -->
+  <rect width="1080" height="180" fill="url(#m4Header)" />
+  <text x="100" y="112" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="44" fill="#ffffff" text-anchor="middle">12R</text>
+  <text x="165" y="108" font-family="'Cinzel', Georgia, serif" font-weight="800" font-size="48" fill="#ffffff">12Rashi</text>
+  <text x="165" y="136" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="20" fill="#fef3c7">DAILY RASHI BHAVISHYA &amp; AUDIO FAL</text>
+
+  <!-- Hero Daily Horoscope Card -->
+  <g transform="translate(60, 220)" filter="url(#m4Shadow)">
+    <rect width="960" height="490" rx="32" fill="#ffffff" />
+    
+    <!-- Sign Header -->
+    <circle cx="120" cy="110" r="50" fill="#fef3c7" stroke="#f59e0b" stroke-width="4" />
+    <text x="120" y="125" font-size="48" text-anchor="middle">♈</text>
+
+    <text x="195" y="105" font-family="'Cinzel', serif" font-weight="900" font-size="36" fill="#78350f">Mesh Rashi (Aries)</text>
+    <text x="195" y="140" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="20" fill="#15803d">✦ 92% Auspicious Cosmic Transit Today</text>
+
+    <!-- Score Badges -->
+    <g transform="translate(60, 190)">
+      <rect width="190" height="70" rx="16" fill="#f0fdf4" stroke="#86efac" />
+      <text x="95" y="32" font-weight="700" font-size="16" fill="#166534" text-anchor="middle">Career: 95%</text>
+      <text x="95" y="55" font-size="14" fill="#15803d" text-anchor="middle">Promotion Peak</text>
+
+      <rect x="220" width="190" height="70" rx="16" fill="#f0fdf4" stroke="#86efac" />
+      <text x="315" y="32" font-weight="700" font-size="16" fill="#166534" text-anchor="middle">Love: 88%</text>
+      <text x="315" y="55" font-size="14" fill="#15803d" text-anchor="middle">Venus Harmony</text>
+
+      <rect x="440" width="190" height="70" rx="16" fill="#f0fdf4" stroke="#86efac" />
+      <text x="535" y="32" font-weight="700" font-size="16" fill="#166534" text-anchor="middle">Wealth: 90%</text>
+      <text x="535" y="55" font-size="14" fill="#15803d" text-anchor="middle">Gains indicated</text>
+
+      <rect x="660" width="180" height="70" rx="16" fill="#fffbeb" stroke="#fde047" />
+      <text x="750" y="32" font-weight="700" font-size="16" fill="#854d0e" text-anchor="middle">Health: 82%</text>
+      <text x="750" y="55" font-size="14" fill="#a16207" text-anchor="middle">Maintain energy</text>
+    </g>
+
+    <!-- Key Guidance Quote -->
+    <rect x="60" y="280" width="840" height="85" rx="16" fill="#fff7ed" />
+    <text x="90" y="320" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="18" fill="#9a3412">
+      "Sun illuminates your 10th house of profession. Decisive meetings will bring success."
+    </text>
+    <text x="90" y="348" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#78716c">
+      Lucky Color: Saffron • Lucky Number: 7 • Lucky Muhurat: 11:30 AM - 01:15 PM
+    </text>
+
+    <!-- Audio Player CTA -->
+    <rect x="60" y="390" width="840" height="70" rx="20" fill="url(#m4Header)" />
+    <text x="480" y="435" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="22" fill="#ffffff" text-anchor="middle">
+      🔊 Listen to Today's Audio Rashi Fal (5 Min Broadcast)
+    </text>
+  </g>
+
+  <!-- 12 Rashis Selector Grid -->
+  <g transform="translate(60, 750)" filter="url(#m4Shadow)">
+    <rect width="960" height="520" rx="32" fill="#ffffff" />
+    <text x="60" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="30" fill="#78350f">All 12 Rashis Daily Insights</text>
+
+    <!-- Grid items -->
+    <g transform="translate(60, 90)">
+      <!-- Row 1 -->
+      <rect width="190" height="90" rx="18" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+      <text x="95" y="45" font-size="26" text-anchor="middle">♈ Mesh</text>
+      <text x="95" y="72" font-size="15" fill="#15803d" text-anchor="middle">92% Auspicious</text>
+
+      <rect x="215" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="310" y="45" font-size="26" text-anchor="middle">♉ Vrishabh</text>
+      <text x="310" y="72" font-size="15" fill="#15803d" text-anchor="middle">88% Favorable</text>
+
+      <rect x="430" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="525" y="45" font-size="26" text-anchor="middle">♊ Mithun</text>
+      <text x="525" y="72" font-size="15" fill="#15803d" text-anchor="middle">85% Favorable</text>
+
+      <rect x="645" width="195" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="742" y="45" font-size="26" text-anchor="middle">♋ Kark</text>
+      <text x="742" y="72" font-size="15" fill="#15803d" text-anchor="middle">80% Positive</text>
+
+      <!-- Row 2 -->
+      <rect y="110" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="95" y="155" font-size="26" text-anchor="middle">♌ Singh</text>
+      <text x="95" y="182" font-size="15" fill="#15803d" text-anchor="middle">91% High Growth</text>
+
+      <rect x="215" y="110" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="310" y="155" font-size="26" text-anchor="middle">♍ Kanya</text>
+      <text x="310" y="182" font-size="15" fill="#15803d" text-anchor="middle">84% Favorable</text>
+
+      <rect x="430" y="110" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="525" y="155" font-size="26" text-anchor="middle">♎ Tula</text>
+      <text x="525" y="182" font-size="15" fill="#15803d" text-anchor="middle">87% Balanced</text>
+
+      <rect x="645" y="110" width="195" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="742" y="155" font-size="26" text-anchor="middle">♏ Vrishchik</text>
+      <text x="742" y="182" font-size="15" fill="#15803d" text-anchor="middle">89% Energetic</text>
+
+      <!-- Row 3 -->
+      <rect y="220" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="95" y="265" font-size="26" text-anchor="middle">♐ Dhanu</text>
+      <text x="95" y="292" font-size="15" fill="#15803d" text-anchor="middle">94% Fortune</text>
+
+      <rect x="215" y="220" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="310" y="265" font-size="26" text-anchor="middle">♑ Makar</text>
+      <text x="310" y="292" font-size="15" fill="#15803d" text-anchor="middle">82% Steady</text>
+
+      <rect x="430" y="220" width="190" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="525" y="265" font-size="26" text-anchor="middle">♒ Kumbh</text>
+      <text x="525" y="292" font-size="15" fill="#15803d" text-anchor="middle">86% Innovative</text>
+
+      <rect x="645" y="220" width="195" height="90" rx="18" fill="#fffbeb" stroke="#fde047" />
+      <text x="742" y="265" font-size="26" text-anchor="middle">♓ Meen</text>
+      <text x="742" y="292" font-size="15" fill="#15803d" text-anchor="middle">90% Spiritual</text>
+    </g>
+
+    <!-- Bottom prompt -->
+    <text x="480" y="475" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="20" fill="#b45309" text-anchor="middle">
+      ✦ Tap any Rashi to view full Dasha, Love, Career &amp; Health details ✦
+    </text>
+  </g>
+
+  <!-- Sacred Daily Upayas Card -->
+  <g transform="translate(60, 1310)" filter="url(#m4Shadow)">
+    <rect width="960" height="430" rx="32" fill="#ffffff" />
+    <text x="60" y="65" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="28" fill="#78350f">Sacred Vedic Upayas &amp; Remedies</text>
+    
+    <rect x="60" y="95" width="840" height="95" rx="18" fill="#fff7ed" stroke="#fed7aa" />
+    <text x="90" y="135" font-weight="700" font-size="22" fill="#c2410c">🕉️ Surya Gayatri Beej Mantra</text>
+    <text x="90" y="165" font-size="17" fill="#78716c">ॐ आदित्याय विद्महे प्रभाकराय धीमहि तन्नः सूर्यः प्रचोदयात् (108 Japa)</text>
+
+    <rect x="60" y="210" width="840" height="95" rx="18" fill="#f0fdf4" stroke="#86efac" />
+    <text x="90" y="250" font-weight="700" font-size="22" fill="#166534">💎 Energized Gemstone &amp; Yantra Recommendations</text>
+    <text x="90" y="280" font-size="17" fill="#78716c">Certified Natural Ruby &amp; Surya Yantra available with 100% Pran Pratishtha</text>
+
+    <rect x="60" y="325" width="840" height="75" rx="20" fill="#ea580c" />
+    <text x="480" y="372" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="24" fill="#ffffff" text-anchor="middle">
+      🛍️ Explore Authentic Astro Store Items
+    </text>
+  </g>
+
+  <!-- Bottom Nav -->
+  <g transform="translate(0, 1780)">
+    <rect width="1080" height="140" fill="#ffffff" filter="url(#m4Shadow)" />
+    <text x="135" y="70" font-size="40" text-anchor="middle">🏠</text>
+    <text x="135" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="18" fill="#78716c" text-anchor="middle">Home</text>
+    <text x="405" y="70" font-size="40" text-anchor="middle">📞</text>
+    <text x="405" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="18" fill="#78716c" text-anchor="middle">Consult</text>
+    <text x="675" y="70" font-size="40" text-anchor="middle">☀️</text>
+    <text x="675" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="18" fill="#d97706" text-anchor="middle">Horoscope</text>
+    <text x="945" y="70" font-size="40" text-anchor="middle">👤</text>
+    <text x="945" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="18" fill="#78716c" text-anchor="middle">Profile</text>
+  </g>
+</svg>
+`;
+
 async function run() {
   await sharp(Buffer.from(svgMobile1))
     .png({ quality: 90 })
@@ -520,6 +693,11 @@ async function run() {
     .png({ quality: 90 })
     .toFile(path.join(outDir, 'screenshot-mobile-3.png'));
   console.log('Created screenshot-mobile-3.png');
+
+  await sharp(Buffer.from(svgMobile4))
+    .png({ quality: 90 })
+    .toFile(path.join(outDir, 'screenshot-mobile-4.png'));
+  console.log('Created screenshot-mobile-4.png');
 
   await sharp(Buffer.from(svgDesktop))
     .png({ quality: 90 })
