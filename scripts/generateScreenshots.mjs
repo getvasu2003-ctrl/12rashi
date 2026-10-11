@@ -395,6 +395,116 @@ const svgDesktop = `
 </svg>
 `;
 
+// 4. Mobile Screenshot 3: 36-Guna Kundli Milan (1080 x 1920)
+const svgMobile3 = `
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="m3Bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff1f2" />
+      <stop offset="50%" stop-color="#ffe4e6" />
+      <stop offset="100%" stop-color="#fecdd3" />
+    </linearGradient>
+    <linearGradient id="m3Header" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e11d48" />
+      <stop offset="50%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#fb7185" />
+    </linearGradient>
+    <filter id="m3Shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#881337" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1920" fill="url(#m3Bg)" />
+
+  <!-- App Header -->
+  <rect width="1080" height="180" fill="url(#m3Header)" />
+  <text x="100" y="112" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="44" fill="#ffffff" text-anchor="middle">12R</text>
+  <text x="165" y="108" font-family="'Cinzel', Georgia, serif" font-weight="800" font-size="48" fill="#ffffff">12Rashi</text>
+  <text x="165" y="136" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="20" fill="#ffe4e6">36-GUNA ASHTAKOOT KUNDLI MILAN</text>
+
+  <!-- Hero Score Card -->
+  <g transform="translate(60, 220)" filter="url(#m3Shadow)">
+    <rect width="960" height="420" rx="32" fill="#ffffff" />
+    <circle cx="480" cy="180" r="100" fill="#fff1f2" stroke="#e11d48" stroke-width="8" />
+    <text x="480" y="175" font-family="'Cinzel', serif" font-weight="900" font-size="52" fill="#e11d48" text-anchor="middle">29 / 36</text>
+    <text x="480" y="215" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="22" fill="#9f1239" text-anchor="middle">Gunas Matched</text>
+    
+    <text x="480" y="325" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="30" fill="#15803d" text-anchor="middle">✨ Highly Auspicious Match (Uttam Milan)</text>
+    <text x="480" y="365" font-family="'Plus Jakarta Sans', sans-serif" font-size="22" fill="#78716c" text-anchor="middle">Boy: Rohit Sharma (Leo) • Girl: Ananya Verma (Aries)</text>
+  </g>
+
+  <!-- Ashtakoot 8 Koot Breakdown -->
+  <g transform="translate(60, 680)" filter="url(#m3Shadow)">
+    <rect width="960" height="540" rx="32" fill="#ffffff" />
+    <text x="60" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="30" fill="#881337">Ashtakoot 8-Factor Compatibility</text>
+
+    <!-- Koot 1-4 -->
+    <rect x="60" y="90" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="85" y="130" font-weight="700" font-size="22" fill="#166534">Varna Koot: 1 / 1 (Full)</text>
+    <text x="85" y="155" font-size="16" fill="#15803d">Mutual spiritual work harmony</text>
+
+    <rect x="500" y="90" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="525" y="130" font-weight="700" font-size="22" fill="#166534">Vashya Koot: 2 / 2 (Full)</text>
+    <text x="525" y="155" font-size="16" fill="#15803d">Dominance &amp; emotional balance</text>
+
+    <rect x="60" y="195" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="85" y="235" font-weight="700" font-size="22" fill="#166534">Tara Koot: 3 / 3 (Full)</text>
+    <text x="85" y="260" font-size="16" fill="#15803d">Destiny &amp; long health synergy</text>
+
+    <rect x="500" y="195" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="525" y="235" font-weight="700" font-size="22" fill="#166534">Yoni Koot: 4 / 4 (Full)</text>
+    <text x="525" y="260" font-size="16" fill="#15803d">Physical attraction &amp; affinity</text>
+
+    <rect x="60" y="300" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="85" y="340" font-weight="700" font-size="22" fill="#166534">Graha Maitri: 5 / 5 (Full)</text>
+    <text x="85" y="365" font-size="16" fill="#15803d">Psychological &amp; mental friendship</text>
+
+    <rect x="500" y="300" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="525" y="340" font-weight="700" font-size="22" fill="#166534">Gana Koot: 6 / 6 (Full)</text>
+    <text x="525" y="365" font-size="16" fill="#15803d">Deva &amp; Manushya compatibility</text>
+
+    <rect x="60" y="405" width="400" height="85" rx="16" fill="#f0fdf4" stroke="#86efac" />
+    <text x="85" y="445" font-weight="700" font-size="22" fill="#166534">Bhakoot Koot: 7 / 7 (Full)</text>
+    <text x="85" y="470" font-size="16" fill="#15803d">Wealth &amp; family lineage growth</text>
+
+    <rect x="500" y="405" width="400" height="85" rx="16" fill="#fffbeb" stroke="#fde047" />
+    <text x="525" y="445" font-weight="700" font-size="22" fill="#854d0e">Nadi Koot: 1 / 8 (Mild)</text>
+    <text x="525" y="470" font-size="16" fill="#a16207">Neutralized by Jupiter aspect</text>
+  </g>
+
+  <!-- Manglik Status Card -->
+  <g transform="translate(60, 1260)" filter="url(#m3Shadow)">
+    <rect width="960" height="240" rx="32" fill="#ffffff" />
+    <text x="60" y="65" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="28" fill="#1c1917">Manglik Dosha Analysis</text>
+    <text x="60" y="115" font-size="22" fill="#15803d">✅ Boy: Non-Manglik (Mars in 11th House of Gains)</text>
+    <text x="60" y="155" font-size="22" fill="#15803d">✅ Girl: Non-Manglik (Mars in 3rd House of Valour)</text>
+    <text x="60" y="200" font-size="20" fill="#78716c">Verdict: No Manglik obstruction. Marriage is highly recommended.</text>
+  </g>
+
+  <!-- Bottom CTA Button -->
+  <g transform="translate(60, 1540)" filter="url(#m3Shadow)">
+    <rect width="960" height="120" rx="32" fill="#e11d48" />
+    <text x="480" y="72" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="32" fill="#ffffff" text-anchor="middle">
+      💍 Download Full 25-Page Milan PDF
+    </text>
+  </g>
+
+  <!-- Bottom Nav -->
+  <g transform="translate(0, 1780)">
+    <rect width="1080" height="140" fill="#ffffff" filter="url(#m3Shadow)" />
+    <text x="135" y="70" font-size="40" text-anchor="middle">🏠</text>
+    <text x="135" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="18" fill="#78716c" text-anchor="middle">Home</text>
+    <text x="405" y="70" font-size="40" text-anchor="middle">📞</text>
+    <text x="405" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="18" fill="#78716c" text-anchor="middle">Consult</text>
+    <text x="675" y="70" font-size="40" text-anchor="middle">💍</text>
+    <text x="675" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="18" fill="#e11d48" text-anchor="middle">Milan</text>
+    <text x="945" y="70" font-size="40" text-anchor="middle">👤</text>
+    <text x="945" y="105" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="18" fill="#78716c" text-anchor="middle">Profile</text>
+  </g>
+</svg>
+`;
+
 async function run() {
   await sharp(Buffer.from(svgMobile1))
     .png({ quality: 90 })
@@ -406,6 +516,11 @@ async function run() {
     .toFile(path.join(outDir, 'screenshot-mobile-2.png'));
   console.log('Created screenshot-mobile-2.png');
 
+  await sharp(Buffer.from(svgMobile3))
+    .png({ quality: 90 })
+    .toFile(path.join(outDir, 'screenshot-mobile-3.png'));
+  console.log('Created screenshot-mobile-3.png');
+
   await sharp(Buffer.from(svgDesktop))
     .png({ quality: 90 })
     .toFile(path.join(outDir, 'screenshot-desktop-1.png'));
@@ -413,3 +528,4 @@ async function run() {
 }
 
 run().catch(console.error);
+
