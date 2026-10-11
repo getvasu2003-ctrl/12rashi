@@ -1519,7 +1519,7 @@ ${session.astrologerName}:`;
         clearTimeout(timeoutId);
         if (aRes.ok) {
           const txt = await aRes.text();
-          if (txt.includes('com.twelverashi.app') || txt.includes('sha256_cert_fingerprints')) {
+          if (txt.includes('com.rashi12.app') || txt.includes('com.twelverashi.app') || txt.includes('sha256_cert_fingerprints')) {
             assetLinksFound = true;
           }
         }
@@ -1593,7 +1593,7 @@ ${session.astrologerName}:`;
           title: 'Digital Asset Links (TWA Verification)',
           passed: assetLinksFound || fs.existsSync(path.resolve('public/.well-known/assetlinks.json')),
           status: assetLinksFound ? 'Live Verified' : 'Built & Ready',
-          detail: 'assetlinks.json configured for com.twelverashi.app',
+          detail: 'assetlinks.json configured for com.rashi12.app',
         },
       ];
 
