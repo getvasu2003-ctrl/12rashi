@@ -568,7 +568,7 @@ Customer Grievance Redressal available 24/7.`,
                   <li>Open <a href={`https://www.pwabuilder.com/testing?url=${encodeURIComponent(targetUrl)}`} target="_blank" rel="noreferrer" className="text-amber-400 font-bold underline inline-flex items-center gap-1">PWABuilder.com (Auto-Audit Link) <ExternalLink className="w-3 h-3" /></a></li>
                   <li>Target URL automatically verified: <strong className="text-white font-mono bg-stone-900 px-2 py-0.5 rounded">{targetUrl}</strong></li>
                   <li>Click <strong>&quot;Package for Android&quot;</strong> &gt; click <strong>&quot;Options&quot;</strong>.</li>
-                  <li>Set <strong>Package ID</strong> to: <strong className="text-amber-300 font-mono bg-stone-900 px-2 py-0.5 rounded">com.rashi12.app</strong> (matches your Play Console app ID!).</li>
+                  <li>Set <strong>Package ID</strong> to: <strong className="text-amber-300 font-mono bg-stone-900 px-2 py-0.5 rounded">com.rashi12.dating</strong> (matches your Play Console app ID!).</li>
                   <li>Download the signed <strong className="text-emerald-400 font-mono">12rashi.aab</strong> bundle ready for Play Console upload!</li>
                 </ol>
               </div>
@@ -685,7 +685,7 @@ npx @bubblewrap/cli build`}
                     <strong className="text-white">Option A:</strong> Go to <strong>Production &gt; Releases</strong> and click <strong>&quot;Discard release&quot;</strong>. Re-create the release and select <span className="text-emerald-400 font-bold">&quot;Use Google-generated key&quot;</span>.
                   </p>
                   <p className="text-stone-300">
-                    <strong className="text-white">Option B:</strong> If the signing selection is locked at the app container level, create a <strong>New App</strong> in Play Console with the same title (<code className="text-amber-300">12Rashi</code>) and package (<code className="text-emerald-400">com.rashi12.app</code>). During setup, choose default <span className="text-emerald-400 font-bold">&quot;Let Google manage and protect your app signing key (recommended)&quot;</span>.
+                    <strong className="text-white">Option B:</strong> If the signing selection is locked at the app container level, create a <strong>New App</strong> in Play Console with the same title (<code className="text-amber-300">12Rashi</code>) and package (<code className="text-emerald-400">com.rashi12.dating</code>). During setup, choose default <span className="text-emerald-400 font-bold">&quot;Let Google manage and protect your app signing key (recommended)&quot;</span>.
                   </p>
                 </div>
               </div>
@@ -829,7 +829,7 @@ npx @bubblewrap/cli build`}
         {/* Footer */}
         <div className="p-4 bg-stone-900/90 border-t border-stone-800 flex justify-between items-center text-xs">
           <span className="text-stone-400 text-[11px]">
-            Target Domain: <code className="text-amber-300 font-mono">{targetUrl}</code> | Package ID: <code className="text-emerald-400 font-mono">com.rashi12.app</code>
+            Target Domain: <code className="text-amber-300 font-mono">{targetUrl}</code> | Package ID: <code className="text-emerald-400 font-mono">com.rashi12.dating</code>
           </span>
           <button
             onClick={onClose}
