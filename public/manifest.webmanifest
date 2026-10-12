@@ -1,38 +1,47 @@
 {
-  "id": "/?utm_source=pwa",
-  "name": "12Rashi - Live Astrology, Kundli & Consultations",
-  "short_name": "12Rashi",
-  "description": "India's premier astrology platform featuring verified astrologers, live video & audio calls, Janam Kundli, and AstroStore.",
-  "start_url": "/?utm_source=pwa",
-  "scope": "/",
-  "display": "standalone",
-  "display_override": [
-    "window-controls-overlay",
-    "standalone",
-    "minimal-ui"
-  ],
-  "orientation": "portrait",
-  "theme_color": "#ea580c",
-  "background_color": "#fff7ed",
+  "id": "https://www.12rashi.in/",
+  "name": "12Rashi Dating app for mature professionals",
+  "short_name": "12Rashi 40+",
+  "description": "An exclusive, verified dating and meaningful companionship platform tailored for mature professionals aged 40+, featuring Aadhaar-verified profiles, end-to-end privacy, AI compatibility analysis, secure messaging, and high-definition video dates.",
   "lang": "en-IN",
   "dir": "ltr",
-  "categories": [
-    "lifestyle",
-    "entertainment",
-    "shopping",
-    "utilities"
+  "start_url": "https://www.12rashi.in/",
+  "scope": "https://www.12rashi.in/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "window-controls-overlay"],
+  "orientation": "portrait-primary",
+  "background_color": "#0b0f19",
+  "theme_color": "#d97706",
   "prefer_related_applications": false,
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.rashi12.app",
-      "id": "com.rashi12.app"
-    }
-  ],
+  "categories": ["lifestyle", "social"],
   "icons": [
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
@@ -47,37 +56,36 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "screenshots": [
     {
-      "src": "/screenshots/screenshot-mobile-1.png",
+      "src": "/icons/screenshot-mobile.png",
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Live Astrologer Consultations & Daily Predictions"
+      "label": "12Rashi Curated Matches for 40+ Mature Professionals"
     },
     {
-      "src": "/screenshots/screenshot-mobile-2.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Interactive Janam Kundli & Lunar Phase Calendar"
-    },
-    {
-      "src": "/screenshots/screenshot-desktop-1.png",
+      "src": "/icons/screenshot-wide.png",
       "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "12Rashi Vedic Astrology Desktop & Tablet Dashboard"
+      "label": "12Rashi Executive Compatibility Dossier on Desktop"
     }
   ],
   "shortcuts": [
     {
-      "name": "Talk to Astrologer",
-      "short_name": "Consult",
-      "description": "Connect with verified Vedic astrologers instantly",
-      "url": "/?tab=astrologers",
+      "name": "Curated Dossiers",
+      "short_name": "Dossiers",
+      "description": "View today's hand-curated mature executive dossiers",
+      "url": "https://www.12rashi.in/?tab=dossiers",
       "icons": [
         {
           "src": "/icons/icon-192.png",
@@ -86,34 +94,10 @@
       ]
     },
     {
-      "name": "Daily Horoscope",
-      "short_name": "Rashifal",
-      "description": "Read your personalized daily zodiac predictions",
-      "url": "/?tab=horoscope",
-      "icons": [
-        {
-          "src": "/icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Janam Kundli",
-      "short_name": "Kundli",
-      "description": "Calculate birth chart, dosha & planetary dashas",
-      "url": "/?tab=kundli",
-      "icons": [
-        {
-          "src": "/icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Lunar Panchang",
-      "short_name": "Panchang",
-      "description": "Daily Tithi, Muhurat, and Purnima/Amavasya dates",
-      "url": "/?tab=panchang",
+      "name": "Encrypted Messages",
+      "short_name": "Messages",
+      "description": "Access end-to-end encrypted executive chats",
+      "url": "https://www.12rashi.in/?tab=messages",
       "icons": [
         {
           "src": "/icons/icon-192.png",
@@ -122,14 +106,5 @@
       ]
     }
   ],
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.twelverashi.app",
-      "id": "com.twelverashi.app"
-    }
-  ],
-  "launch_handler": {
-    "client_mode": "auto"
-  }
+  "related_applications": []
 }

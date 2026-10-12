@@ -1,287 +1,372 @@
-import React, { useState } from 'react';
-import { AppProvider, useApp } from './context/AppContext.tsx';
-import { Header } from './components/Header.tsx';
-import { Footer } from './components/Footer.tsx';
-import { MobileNav } from './components/MobileNav.tsx';
-import { AstrologerDirectory } from './components/astrologers/AstrologerDirectory.tsx';
-import { KundliGenerator } from './components/kundli/KundliGenerator.tsx';
-import { AIInsightsEngine } from './components/ai/AIInsightsEngine.tsx';
-import { HoroscopeSection } from './components/horoscope/HoroscopeSection.tsx';
-import { KundliMilan } from './components/kundli/KundliMilan.tsx';
-import { AstroStore } from './components/store/AstroStore.tsx';
-import { PartnerDashboard } from './components/partner/PartnerDashboard.tsx';
-import { PartnerLogin } from './components/partner/PartnerLogin.tsx';
-import { LiveChatModal } from './components/consultation/LiveChatModal.tsx';
-import { AudioCallModal } from './components/consultation/AudioCallModal.tsx';
-import { VideoCallModal } from './components/consultation/VideoCallModal.tsx';
-import { PaymentModal } from './components/wallet/PaymentModal.tsx';
-import { DltSmsModal } from './components/dlt/DltSmsModal.tsx';
-import { LuckyWheel } from './components/growth/LuckyWheel.tsx';
-import { LiveStreamModal } from './components/growth/LiveStreamModal.tsx';
-import { PanchangSection } from './components/panchang/PanchangSection.tsx';
-import { ConsultationArchiveSection } from './components/consultation/ConsultationArchiveSection.tsx';
-import { FamilyProfilesModal } from './components/family/FamilyProfilesModal.tsx';
-import { ScheduledConsultationModal } from './components/consultation/ScheduledConsultationModal.tsx';
-import { AsyncQuestionModal } from './components/consultation/AsyncQuestionModal.tsx';
-import { WhatsAppReceiptModal } from './components/consultation/WhatsAppReceiptModal.tsx';
-import { VideoIntroModal } from './components/astrologers/VideoIntroModal.tsx';
-import { AstroClubModal } from './components/growth/AstroClubModal.tsx';
-import { FairBillingModal } from './components/growth/FairBillingModal.tsx';
-import { QrStandeeModal } from './components/growth/QrStandeeModal.tsx';
-import { DynamicMetaManager } from './components/seo/DynamicMetaManager.tsx';
-import { AstrologerProfileModal } from './components/astrologers/AstrologerProfileModal.tsx';
-import { LegalComplianceModal } from './components/legal/LegalComplianceModal.tsx';
-import { KundliPdfModal } from './components/kundli/KundliPdfModal.tsx';
-import { CustomDomainModal } from './components/domain/CustomDomainModal.tsx';
-import { PlayStoreDeployModal } from './components/deploy/PlayStoreDeployModal.tsx';
-import { UserLoginModal } from './components/auth/UserLoginModal.tsx';
-import { FamilyKundliVaultPage } from './components/family/FamilyKundliVaultPage.tsx';
-import { NumerologyPage } from './components/numerology/NumerologyPage.tsx';
-import { VastuPage } from './components/vastu/VastuPage.tsx';
-import { LivePujaSection } from './components/puja/LivePujaSection.tsx';
-import { KundliReportsStore } from './components/reports/KundliReportsStore.tsx';
-import { AsyncQuestionHub } from './components/consultation/AsyncQuestionHub.tsx';
-import { DailyAudioRashiFalPush } from './components/horoscope/DailyAudioRashiFalPush.tsx';
-import { DoshaRemedyBookingModal } from './components/remedies/DoshaRemedyBookingModal.tsx';
-import { PrashnaKundliSection } from './components/kundli/PrashnaKundliSection.tsx';
-import { TatkalConsultationModal } from './components/consultation/TatkalConsultationModal.tsx';
-import { ShubhShagunGiftCards } from './components/growth/ShubhShagunGiftCards.tsx';
-import { OnboardingModal } from './components/onboarding/OnboardingModal.tsx';
-import { MyAstroProfile } from './components/profile/MyAstroProfile.tsx';
+import React, { useState, useEffect } from 'react';
+import {
+  Profile, AadhaarVerificationState, Message, UserBoostState, SubscriptionTier
+} from './types';
+import {
+  INITIAL_PROFILES, INITIAL_USER_PROFILE, INITIAL_CONVERSATIONS
+} from './data/mockProfiles';
+import { Navbar } from './components/Navbar';
+import { CuratedDossiers } from './components/CuratedDossiers';
+import { EncryptedChat } from './components/EncryptedChat';
+import { VideoDateRoom } from './components/VideoDateRoom';
+import { TrustHub } from './components/TrustHub';
+import { MembershipAndBoosts } from './components/MembershipAndBoosts';
+import { UserProfileEditor } from './components/UserProfileEditor';
+import { AadhaarVerificationModal } from './components/AadhaarVerificationModal';
+import { AICompatibilityModal } from './components/AICompatibilityModal';
+import { MobileAuthModal } from './components/MobileAuthModal';
+import { LoginPage } from './components/LoginPage';
+import confetti from 'canvas-confetti';
 
-const MainAppContent: React.FC = () => {
-  const {
-    role,
-    setRole,
-    isPartnerAuthenticated,
-    openQrStandeeModal,
-    setOpenQrStandeeModal,
-    selectedProfileAstrologer,
-    openCustomDomainModal,
-    setOpenCustomDomainModal,
-    openPlayStoreModal,
-    setOpenPlayStoreModal,
-    openLoginModal,
-    setOpenLoginModal,
-    openAstroProfileModal,
-    setOpenAstroProfileModal,
-  } = useApp();
+export default function App() {
+  // Navigation
+  const [activeTab, setActiveTab] = useState<'dossiers' | 'messages' | 'trust' | 'membership' | 'profile'>('dossiers');
 
-  const [activeTab, setActiveTab] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const paramTab = new URLSearchParams(window.location.search).get('tab');
-      if (
-        paramTab &&
-        [
-          'astrologers',
-          'panchang',
-          'kundli',
-          'prashna',
-          'gift-cards',
-          'ai-insights',
-          'horoscope',
-          'milan',
-          'store',
-          'archive',
-          'family-vault',
-          'login',
-          'numerology',
-          'vastu',
-          'live-puja',
-          'reports',
-          'async-qa',
-          'daily-audio',
-          'my-profile',
-        ].includes(paramTab)
-      ) {
-        return paramTab;
-      }
-    }
-    return 'astrologers';
+  // Mobile Auth state (MSG91 & Jio DLT) - defaults to false so Login Page opens first
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userMobile, setUserMobile] = useState('9876543210');
+  const [isMobileAuthOpen, setIsMobileAuthOpen] = useState(false);
+
+  // Profiles and User state
+  const [profiles, setProfiles] = useState<Profile[]>(INITIAL_PROFILES);
+  const [userProfile, setUserProfile] = useState<Profile>(INITIAL_USER_PROFILE);
+
+  // Aadhaar Verification state
+  const [userVerification, setUserVerification] = useState<AadhaarVerificationState>({
+    isVerified: true,
+    aadhaarNumber: '562189346219',
+    maskedNumber: '•••• •••• 6219',
+    holderName: 'Vasu Sharma',
+    dob: '15/07/1980',
+    age: 46,
+    gender: 'Male',
+    state: 'Maharashtra',
+    digitalSignatureHash: 'SHA256:UIDAI-IN-A48F920-E2EE-ACTIVE',
+    verificationTimestamp: '10 Feb 2026',
+    status: 'verified'
   });
 
-  return (
-    <div className="min-h-screen flex flex-col bg-orange-50/30 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors selection:bg-orange-500 selection:text-white">
-      {/* Top Navbar */}
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+  // Conversations
+  const [conversations, setConversations] = useState<Record<string, Message[]>>(INITIAL_CONVERSATIONS);
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-12">
-        {/* If in Partner mode, check authentication */}
-        {role === 'partner' ? (
-          isPartnerAuthenticated ? (
-            <PartnerDashboard />
-          ) : (
-            <PartnerLogin onBackToSeeker={() => setRole('user')} />
-          )
-        ) : (
-          <>
-            {activeTab === 'astrologers' && (
-              <AstrologerDirectory
-                onOpenPrashna={() => setActiveTab('prashna')}
-                onOpenGiftCards={() => setActiveTab('gift-cards')}
-                onNavigate={(tab) => setActiveTab(tab)}
-              />
-            )}
-            {activeTab === 'panchang' && (
-              <PanchangSection onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'kundli' && (
-              <KundliGenerator
-                onOpenReports={() => setActiveTab('reports')}
-                onOpenPrashna={() => setActiveTab('prashna')}
-              />
-            )}
-            {activeTab === 'prashna' && (
-              <PrashnaKundliSection onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'reports' && (
-              <KundliReportsStore onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'gift-cards' && (
-              <ShubhShagunGiftCards onRedeemSuccess={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'async-qa' && (
-              <AsyncQuestionHub onOpenConsult={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'daily-audio' && (
-              <DailyAudioRashiFalPush onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'ai-insights' && <AIInsightsEngine />}
-            {activeTab === 'horoscope' && (
-              <HoroscopeSection onOpenAudioBroadcast={() => setActiveTab('daily-audio')} />
-            )}
-            {activeTab === 'milan' && <KundliMilan />}
-            {activeTab === 'store' && (
-              <AstroStore
-                onOpenLivePuja={() => setActiveTab('live-puja')}
-                onOpenReports={() => setActiveTab('reports')}
-                onOpenGiftCards={() => setActiveTab('gift-cards')}
-              />
-            )}
-            {activeTab === 'live-puja' && (
-              <LivePujaSection onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'archive' && <ConsultationArchiveSection />}
-            {activeTab === 'family-vault' && (
-              <FamilyKundliVaultPage
-                onOpenAstrologers={() => setActiveTab('astrologers')}
-                onOpenKundliMilan={() => setActiveTab('milan')}
-              />
-            )}
-            {activeTab === 'login' && (
-              <UserLoginModal
-                isOpen={true}
-                onClose={() => setActiveTab('astrologers')}
-                isPage={true}
-              />
-            )}
-            {activeTab === 'numerology' && (
-              <NumerologyPage onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'vastu' && (
-              <VastuPage onConsultClick={() => setActiveTab('astrologers')} />
-            )}
-            {activeTab === 'my-profile' && (
-              <MyAstroProfile onNavigateTab={(tab) => setActiveTab(tab)} />
-            )}
-          </>
+  // Membership & Monetization (Cashfree PG)
+  const [currentTier, setCurrentTier] = useState<'silver' | 'gold' | 'platinum'>('gold');
+  const [boostState, setBoostState] = useState<UserBoostState>({
+    active: false,
+    boostType: null,
+    expiresAt: null,
+    creditsRemaining: 3
+  });
+
+  // Executive Privacy Settings
+  const [incognitoMode, setIncognitoMode] = useState(false);
+  const [discreetPhotoBlur, setDiscreetPhotoBlur] = useState(false);
+
+  // Modals & Active Session states
+  const [isAadhaarModalOpen, setIsAadhaarModalOpen] = useState(false);
+  const [aiCompatibilityMatch, setAiCompatibilityMatch] = useState<Profile | null>(null);
+  const [activeVideoCallMatch, setActiveVideoCallMatch] = useState<Profile | null>(null);
+  const [postCallPrompt, setPostCallPrompt] = useState<{ match: Profile; notes: string } | null>(null);
+
+  // Boost timer ticker
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (boostState.active && boostState.expiresAt) {
+      interval = setInterval(() => {
+        if (Date.now() >= (boostState.expiresAt || 0)) {
+          setBoostState((prev) => ({
+            ...prev,
+            active: false,
+            boostType: null,
+            expiresAt: null
+          }));
+        }
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [boostState]);
+
+  // Handlers
+  const handleSendMessage = (
+    receiverId: string,
+    text: string,
+    type: Message['type'] = 'text',
+    rendezvousDetails?: any
+  ) => {
+    const newMessage: Message = {
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      senderId: 'current-user',
+      receiverId,
+      text,
+      timestamp: 'Just now',
+      isEncrypted: true,
+      read: true,
+      type,
+      rendezvousDetails
+    };
+
+    setConversations((prev) => {
+      const existing = prev[receiverId] || [];
+      return {
+        ...prev,
+        [receiverId]: [...existing, newMessage]
+      };
+    });
+  };
+
+  const handleStartChat = (profile: Profile) => {
+    setActiveTab('messages');
+  };
+
+  const handleStartVideoDate = (profile: Profile) => {
+    setActiveVideoCallMatch(profile);
+  };
+
+  const handleEndVideoDate = (notes?: string) => {
+    if (activeVideoCallMatch) {
+      const finishedMatch = activeVideoCallMatch;
+      setActiveVideoCallMatch(null);
+      if (notes) {
+        setPostCallPrompt({ match: finishedMatch, notes });
+      }
+    }
+  };
+
+  const handleActivateBoost = (type: 'spotlight' | 'direct_intro' | 'rewind') => {
+    if (boostState.creditsRemaining <= 0) return;
+
+    if (type === 'spotlight') {
+      const expireTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+      setBoostState((prev) => ({
+        ...prev,
+        active: true,
+        boostType: 'spotlight',
+        expiresAt: expireTime,
+        creditsRemaining: prev.creditsRemaining - 1
+      }));
+      confetti({ particleCount: 70, spread: 60 });
+    } else if (type === 'direct_intro') {
+      setBoostState((prev) => ({
+        ...prev,
+        creditsRemaining: prev.creditsRemaining - 1
+      }));
+      setActiveTab('messages');
+    } else {
+      setBoostState((prev) => ({
+        ...prev,
+        creditsRemaining: prev.creditsRemaining - 1
+      }));
+      setActiveTab('dossiers');
+    }
+  };
+
+  const handleAddCredits = (count: number) => {
+    setBoostState((prev) => ({
+      ...prev,
+      creditsRemaining: prev.creditsRemaining + count
+    }));
+  };
+
+  const handleVerificationComplete = (updatedState: AadhaarVerificationState) => {
+    setUserVerification(updatedState);
+    setUserProfile((prev) => ({
+      ...prev,
+      aadhaarVerified: updatedState.isVerified,
+      aadhaarMasked: updatedState.maskedNumber,
+      verificationDate: updatedState.verificationTimestamp,
+      trustScore: updatedState.isVerified ? 99 : 60
+    }));
+  };
+
+  const handleLoginSuccess = (userData: {
+    mobile: string;
+    token: string;
+    name: string;
+    age: number;
+    profession: string;
+  }) => {
+    setIsLoggedIn(true);
+    setUserMobile(userData.mobile);
+    setUserProfile((prev) => ({
+      ...prev,
+      name: userData.name || prev.name,
+      age: userData.age || prev.age,
+      profession: userData.profession || prev.profession,
+    }));
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
+  // If active video call room is mounted, render it full screen
+  if (activeVideoCallMatch) {
+    return (
+      <VideoDateRoom
+        matchProfile={activeVideoCallMatch}
+        onEndCall={handleEndVideoDate}
+      />
+    );
+  }
+
+  // If user is not logged in, show dedicated Login Page with Mobile OTP verification
+  if (!isLoggedIn) {
+    return (
+      <LoginPage
+        onLoginSuccess={handleLoginSuccess}
+        onExploreDemo={() => {
+          setIsLoggedIn(true);
+          setUserMobile('9876543210');
+        }}
+      />
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
+      {/* Top Navigation */}
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        userVerification={userVerification}
+        onOpenAadhaarModal={() => setIsAadhaarModalOpen(true)}
+        currentTier={currentTier}
+        boostState={boostState}
+        unreadCount={1}
+        isLoggedIn={isLoggedIn}
+        userMobile={userMobile}
+        onOpenMobileAuth={() => setIsMobileAuthOpen(true)}
+        onLogout={handleLogout}
+      />
+
+      {/* Main App Content View Router */}
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 pt-6">
+        {activeTab === 'dossiers' && (
+          <CuratedDossiers
+            profiles={profiles}
+            userProfile={userProfile}
+            userVerified={userVerification.isVerified}
+            onOpenAadhaarModal={() => setIsAadhaarModalOpen(true)}
+            onOpenAICompatibility={(prof) => setAiCompatibilityMatch(prof)}
+            onStartVideoDate={handleStartVideoDate}
+            onStartChat={handleStartChat}
+            onUseDirectIntro={(prof) => handleActivateBoost('direct_intro')}
+            discreetPhotoBlur={discreetPhotoBlur}
+            isBoostActive={boostState.active}
+          />
+        )}
+
+        {activeTab === 'messages' && (
+          <EncryptedChat
+            currentProfileId={userProfile.id}
+            profiles={profiles}
+            conversations={conversations}
+            onSendMessage={handleSendMessage}
+            onStartVideoDate={handleStartVideoDate}
+            onOpenAICompatibility={(prof) => setAiCompatibilityMatch(prof)}
+            onOpenAadhaarModal={() => setIsAadhaarModalOpen(true)}
+            userVerified={userVerification.isVerified}
+          />
+        )}
+
+        {activeTab === 'trust' && (
+          <TrustHub
+            userVerification={userVerification}
+            onOpenAadhaarModal={() => setIsAadhaarModalOpen(true)}
+            incognitoMode={incognitoMode}
+            onToggleIncognito={() => setIncognitoMode(!incognitoMode)}
+            discreetPhotoBlur={discreetPhotoBlur}
+            onTogglePhotoBlur={() => setDiscreetPhotoBlur(!discreetPhotoBlur)}
+          />
+        )}
+
+        {activeTab === 'membership' && (
+          <MembershipAndBoosts
+            currentTier={currentTier}
+            onUpdateTier={setCurrentTier}
+            boostState={boostState}
+            onActivateBoost={handleActivateBoost}
+            onAddCredits={handleAddCredits}
+            customerPhone={userMobile}
+            customerName={userProfile.name}
+          />
+        )}
+
+        {activeTab === 'profile' && (
+          <UserProfileEditor
+            userProfile={userProfile}
+            userVerification={userVerification}
+            onUpdateProfile={setUserProfile}
+            onOpenAadhaarModal={() => setIsAadhaarModalOpen(true)}
+          />
         )}
       </main>
 
-      {/* Footer */}
-      <Footer setActiveTab={setActiveTab} />
+      {/* Mobile OTP Login Modal (MSG91 & Jio DLT) */}
+      <MobileAuthModal
+        isOpen={isMobileAuthOpen}
+        onClose={() => setIsMobileAuthOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+        currentMobile={userMobile}
+        isLoggedIn={isLoggedIn}
+      />
 
-      {/* Mobile Sticky Bottom Navigation Bar */}
-      <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Aadhaar Verification Modal */}
+      <AadhaarVerificationModal
+        isOpen={isAadhaarModalOpen}
+        onClose={() => setIsAadhaarModalOpen(false)}
+        verificationState={userVerification}
+        onVerificationComplete={handleVerificationComplete}
+      />
 
-      {/* Interactive Consultation Modals */}
-      <LiveChatModal />
-      <AudioCallModal />
-      <VideoCallModal />
-      <TatkalConsultationModal />
+      {/* AI Compatibility Modal */}
+      <AICompatibilityModal
+        isOpen={Boolean(aiCompatibilityMatch)}
+        onClose={() => setAiCompatibilityMatch(null)}
+        userProfile={userProfile}
+        matchProfile={aiCompatibilityMatch}
+        onSelectIcebreaker={(icebreakerText) => {
+          if (aiCompatibilityMatch) {
+            handleSendMessage(aiCompatibilityMatch.id, icebreakerText, 'icebreaker');
+            setAiCompatibilityMatch(null);
+            setActiveTab('messages');
+          }
+        }}
+      />
 
-      {/* Payment Gateway & Subscriptions */}
-      <PaymentModal />
-
-      {/* DLT SMS Compliance Modal */}
-      <DltSmsModal />
-
-      {/* Growth & Interactive Features */}
-      <OnboardingModal onNavigate={(tab) => setActiveTab(tab)} />
-      <LuckyWheel />
-      <LiveStreamModal />
-
-      {/* Lentlo Platform Differentiator Modals */}
-      <FamilyProfilesModal />
-      <ScheduledConsultationModal />
-      <AsyncQuestionModal />
-      <WhatsAppReceiptModal />
-      <VideoIntroModal />
-      <AstroClubModal />
-      <FairBillingModal />
-      <QrStandeeModal isOpen={openQrStandeeModal} onClose={() => setOpenQrStandeeModal(false)} />
-
-      {/* Verified Astrologer Profile Modal */}
-      <AstrologerProfileModal />
-
-      {/* Mandatory Legal & IT Rules 2021 Compliance Center */}
-      <LegalComplianceModal />
-
-      {/* Comprehensive Janam Kundli Print / PDF Export */}
-      <KundliPdfModal />
-
-      {/* Contextual 1-Tap Dosha Shanti & Remedy Booking Modal */}
-      <DoshaRemedyBookingModal />
-
-      {/* Custom Domain & DNS Mapping Manager */}
-      <CustomDomainModal isOpen={openCustomDomainModal} onClose={() => setOpenCustomDomainModal(false)} />
-
-      {/* Google Play Store Release & .AAB Packaging Center */}
-      <PlayStoreDeployModal isOpen={openPlayStoreModal} onClose={() => setOpenPlayStoreModal(false)} />
-
-      {/* User Login & Mobile Number Verification Modal */}
-      <UserLoginModal isOpen={openLoginModal} onClose={() => setOpenLoginModal(false)} />
-
-      {/* My Astro Profile Dedicated Modal */}
-      {openAstroProfileModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-white dark:bg-stone-900 rounded-3xl shadow-2xl border border-stone-200 dark:border-stone-800 p-4 sm:p-6">
-            <div className="flex justify-end mb-2">
+      {/* Post Video Call Reflection Dialog */}
+      {postCallPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="bg-slate-900 border border-amber-500/40 rounded-2xl p-6 max-w-md w-full space-y-4 shadow-2xl">
+            <h4 className="text-base font-bold text-white font-serif-luxury">
+              Rendezvous Reflections Saved
+            </h4>
+            <p className="text-xs text-slate-300">
+              Your confidential thoughts from your video date with {postCallPrompt.match.name} have been encrypted and stored in your private log:
+            </p>
+            <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs italic text-slate-200">
+              "{postCallPrompt.notes}"
+            </div>
+            <div className="pt-2 flex gap-3">
               <button
-                type="button"
-                onClick={() => setOpenAstroProfileModal(false)}
-                className="p-2 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
-                aria-label="Close"
+                onClick={() => setPostCallPrompt(null)}
+                className="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold"
               >
-                ✕
+                Done
+              </button>
+              <button
+                onClick={() => {
+                  setPostCallPrompt(null);
+                  setActiveTab('messages');
+                }}
+                className="w-1/2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs"
+              >
+                Send Follow-up Message
               </button>
             </div>
-            <MyAstroProfile
-              isModalView={true}
-              onCloseModal={() => setOpenAstroProfileModal(false)}
-              onNavigateTab={(tab) => {
-                setOpenAstroProfileModal(false);
-                setActiveTab(tab);
-              }}
-            />
           </div>
         </div>
       )}
-
-      {/* Dynamic SEO Meta Tag & Schema.org Manager */}
-      <DynamicMetaManager
-        activeTab={activeTab}
-        selectedAstrologer={selectedProfileAstrologer}
-      />
     </div>
-  );
-};
-
-export default function App() {
-  return (
-    <AppProvider>
-      <MainAppContent />
-    </AppProvider>
   );
 }

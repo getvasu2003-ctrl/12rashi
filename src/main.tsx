@@ -1,16 +1,19 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
-import { ErrorBoundary } from './components/common/ErrorBoundary.tsx';
 import './index.css';
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  createRoot(rootElement).render(
-    <StrictMode>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </StrictMode>,
-  );
+// Register PWA service worker
+if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => {
+        console.log('12Rashi PWA Service Worker registered:', reg.scope);
+      })
+      .catch((err) => {
+        console.warn('PWA Service Worker registration notice:', err);
+      });
+  });
 }
+
+createRoot(document.getElementById('root')!).render(<App />);

@@ -1,6 +1,6 @@
 {
-  "name": "12Rashi - Live Astrology, Kundli & Consultations",
-  "description": "India's premier astrology platform featuring live consultations, Kundli analytics, daily horoscopes, AI predictions, Vedic sacred mantras & remedies, and partner astrologer portal.",
-  "requestFramePermissions": [],
+  "name": "12Rashi Dating app for mature professionals",
+  "description": "An exclusive, verified dating and meaningful companionship platform tailored for mature professionals aged 40+, featuring Aadhaar-verified profiles, end-to-end privacy, AI compatibility analysis, secure messaging, and high-definition video dates.",
+  "requestFramePermissions": ["camera", "microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
