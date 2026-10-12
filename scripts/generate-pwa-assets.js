@@ -47,14 +47,14 @@ function createSvgLogo(size, isMaskable = false) {
       <circle cx="0" cy="0" r="${innerSize * 0.36}" fill="none" stroke="url(#goldGrad)" stroke-width="${Math.max(1.5, Math.round(size * 0.008))}" stroke-dasharray="${size * 0.04} ${size * 0.02}" opacity="0.6" />
 
       <!-- Center Typography 12R -->
-      <text x="0" y="${size * 0.03}" font-family="Georgia, serif" font-weight="900" font-size="${innerSize * 0.34}" text-anchor="middle" dominant-baseline="central" fill="url(#goldGrad)" filter="url(#shadow)">
+      <text x="0" y="${-innerSize * 0.02}" font-family="Georgia, serif" font-weight="900" font-size="${innerSize * 0.32}" text-anchor="middle" dominant-baseline="central" fill="url(#goldGrad)" filter="url(#shadow)">
         12R
       </text>
 
       <!-- 40+ Tag banner -->
-      <rect x="${-innerSize * 0.28}" y="${innerSize * 0.26}" width="${innerSize * 0.56}" height="${innerSize * 0.12}" rx="${innerSize * 0.06}" fill="#1e1b4b" stroke="#f59e0b" stroke-width="${Math.max(1, Math.round(size * 0.005))}" />
-      <text x="0" y="${innerSize * 0.325}" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="${innerSize * 0.07}" text-anchor="middle" dominant-baseline="central" fill="#fef3c7" letter-spacing="1">
-        40+ MATURE
+      <rect x="${-innerSize * 0.34}" y="${innerSize * 0.23}" width="${innerSize * 0.68}" height="${innerSize * 0.14}" rx="${innerSize * 0.07}" fill="#1e1b4b" stroke="#f59e0b" stroke-width="${Math.max(1, Math.round(size * 0.005))}" />
+      <text x="0" y="${innerSize * 0.305}" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="${innerSize * 0.065}" text-anchor="middle" dominant-baseline="central" fill="#fef3c7" letter-spacing="1">
+        40+ DATING APP
       </text>
     </g>
   </svg>`;
